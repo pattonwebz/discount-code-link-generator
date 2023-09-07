@@ -120,35 +120,48 @@ parcelRequire = (function (modules, cache, entry, globalName) {
 })({"index.ts":[function(require,module,exports) {
 "use strict";
 
-var generateButton = document.getElementById('generateLink');
-var originLink = document.getElementById('originLink');
-var discountCode = document.getElementById('discountCode');
-var outputLink = document.getElementById('outputLink');
+var generateButton = document.getElementById('generate');
+var linkInput = document.getElementById('url');
+var codeInput = document.getElementById('discount_code');
+var outputLink = document.getElementById('generated_link');
+outputLink === null || outputLink === void 0 ? void 0 : outputLink.addEventListener('click', function () {
+  var text = outputLink.innerHTML;
+  var notification = document.getElementById('notification');
+  if (text) {
+    navigator.clipboard.writeText(text).then(function () {
+      notification.classList.add('show');
+      setTimeout(function () {
+        notification.classList.remove('show');
+      }, 3000);
+    }, function () {
+      alert('Failed to copy to clipboard');
+    });
+  }
+});
 generateButton === null || generateButton === void 0 ? void 0 : generateButton.addEventListener('click', function () {
-  if (!originLink || !discountCode) {
+  if (!linkInput || !codeInput) {
     alert('Please enter link and discount code');
     return;
   }
-  if (!outputLink) {
+  if (!outputLink instanceof HTMLElement) {
     return;
   }
-  if (!(originLink instanceof HTMLInputElement) || !(discountCode instanceof HTMLInputElement)) {
+  if (!(linkInput instanceof HTMLInputElement) || !(codeInput instanceof HTMLInputElement)) {
     return;
   }
-  var link = originLink.value;
-  var code = discountCode.value;
+  var link = linkInput.value;
+  var code = codeInput.value;
   if (!link || !code) {
     alert('Please enter link and discount code');
     return;
   }
   localStorage.setItem('link', link);
   localStorage.setItem('code', code);
-  var result = generateLink(link, code);
-  outputLink.innerHTML = result;
+  outputLink.innerHTML = generateLink(link, code);
 });
 var generateLink = function generateLink(link, code) {
   var url = new URL(link);
-  var discountFragment = "/discount/".concat(code);
+  var discountFragment = "discount/".concat(code);
   var domain = url.hostname;
   var path = url.pathname;
   var protocol = url.protocol;
@@ -160,9 +173,9 @@ window.onload = function () {
   var link = localStorage.getItem('link');
   var code = localStorage.getItem('code');
   if (link && code) {
-    if (originLink instanceof HTMLInputElement && discountCode instanceof HTMLInputElement) {
-      originLink.value = link;
-      discountCode.value = code;
+    if (linkInput instanceof HTMLInputElement && codeInput instanceof HTMLInputElement) {
+      linkInput.value = link;
+      codeInput.value = code;
     }
     if (outputLink) {
       outputLink.innerHTML = generateLink(link, code);
@@ -194,7 +207,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "34859" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "38749" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
